@@ -15,6 +15,8 @@ export class DetailsComponent implements OnInit {
   savedValues: any = {};
 
   // Mock data for dropdowns
+  companies = ['Oriental Plantation Company Limited'];
+  stores = ['Grow Room (Mentley Korat)'];
   itemCategories = ['Category1', 'Category2', 'Category3'];
   items = ['Item1', 'Item2', 'Item3'];
   strains = ['Strain1', 'Strain2', 'Strain3'];
@@ -42,16 +44,17 @@ export class DetailsComponent implements OnInit {
       itemCategory: ['', Validators.required],
       item: ['', Validators.required],
       strain: ['', Validators.required],
-      quantity: ['', Validators.required],
+      quantity: ['', [Validators.required, Validators.pattern(/^[0-9]*$/)]], // Pattern to allow only numbers
       uom: ['', Validators.required],
-      totalCost: ['', Validators.required],
+      totalCost: ['', [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)]], // Pattern to allow numbers with up to 2 decimal places
       costPerUnit: [''],
       supplier: ['', Validators.required]
     });
   }
+  
 
   onCompanySelect(event: any) {
-    this.selectedCompany = event.target.value;
+    this.selectedCompany = event.value;
   }
 
   onDateSelect(event: any) {
@@ -59,7 +62,7 @@ export class DetailsComponent implements OnInit {
   }
 
   onStoreSelect(event: any) {
-    this.selectedStore = event.target.value;
+    this.selectedStore = event.value;
   }
 
   onRemarksChange(event: any) {
@@ -93,6 +96,7 @@ export class DetailsComponent implements OnInit {
       this.selectedRemarks = this.detailsForm.get('remarks')?.value;
     }
   }
+
   onSubmit(saveAsDraft: boolean = false) {
     if (this.detailsForm.valid) {
       this.savedValues = this.detailsForm.value;

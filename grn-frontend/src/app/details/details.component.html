@@ -1,4 +1,4 @@
-<mat-horizontal-stepper>
+<mat-horizontal-stepper #stepper>
   <mat-step label="Details" [completed]="detailsForm.valid" state="details">
     <mat-card>
       <mat-card-header class="header-step">
@@ -6,49 +6,70 @@
       </mat-card-header>
       <form [formGroup]="detailsForm" (ngSubmit)="onSubmit()">
         <mat-card-content>
-          <div class="form-container" style="display: flex;">
-            <div style="width: 50%;">
-              <mat-card-title class="custom-font" style="margin-right: auto;">
+          <div class="form-container" style="display: flex">
+            <div style="width: 50%">
+              <mat-card-title class="custom-font" style="margin-right: auto">
                 Basic Details <span class="help-icon">?</span>
               </mat-card-title>
             </div>
-            
-            <div style="width: 50%; margin-left: auto;">
+
+            <div style="width: 50%; margin-left: auto">
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Select Company</mat-label>
-                <mat-select (selectionChange)="onCompanySelect($event)">
-                  <mat-option value="option">Option</mat-option>
+                <mat-select
+                  formControlName="company"
+                  (selectionChange)="onCompanySelect($event)"
+                >
+                  <mat-option
+                    *ngFor="let company of companies"
+                    [value]="company"
+                  >
+                    {{ company }}
+                  </mat-option>
                 </mat-select>
-                
               </mat-form-field>
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Choose a date</mat-label>
-                <input matInput [matDatepicker]="datepicker">
-                <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+                <input
+                  matInput
+                  [matDatepicker]="datepicker"
+                  formControlName="date"
+                  (dateChange)="onDateSelect($event)"
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="datepicker"
+                ></mat-datepicker-toggle>
                 <mat-datepicker #datepicker></mat-datepicker>
               </mat-form-field>
               <div class="form-field">
                 <mat-form-field appearance="outline" class="full-width">
                   <mat-label>Select Store</mat-label>
-                  <mat-select formControlName="exampleSelect" panelClass="custom-select">
-                    <mat-option value="one">First Store</mat-option>
-                    <mat-option value="two">Second Store</mat-option>
+                  <mat-select
+                    formControlName="store"
+                    (selectionChange)="onStoreSelect($event)"
+                  >
+                    <mat-option *ngFor="let store of stores" [value]="store">
+                      {{ store }}
+                    </mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
-          
-              <div class="form-field" style="margin-top: 16px;">
+
+              <div class="form-field" style="margin-top: 16px">
                 <mat-form-field appearance="outline" class="full-width">
                   <mat-label>Remarks</mat-label>
-                  <textarea matInput formControlName="remarks"></textarea>
+                  <textarea
+                    matInput
+                    formControlName="remarks"
+                    (input)="onRemarksChange($event)"
+                  ></textarea>
                 </mat-form-field>
               </div>
             </div>
           </div>
         </mat-card-content>
-        
-        
-        
+
         <mat-card-actions class="actions-right">
           <button
             mat-raised-button
@@ -59,7 +80,14 @@
           >
             CANCEL
           </button>
-          <button mat-button matStepperNext class="next-button">NEXT</button>
+          <button
+            mat-button
+            matStepperNext
+            class="next-button"
+            (click)="onNext()"
+          >
+            NEXT
+          </button>
         </mat-card-actions>
       </form>
     </mat-card>
@@ -67,31 +95,28 @@
 
   <mat-step label="Inventories" state="inventories">
     <form [formGroup]="detailsForm">
-      <mat-card>
-        <mat-card-header class="header-step">
-          <mat-card-title class="custom-font">Create GRN</mat-card-title>
-        </mat-card-header>
-      </mat-card>
+      <mat-card-header class="header-step">
+        <mat-card-title class="custom-font">Create GRN</mat-card-title>
+      </mat-card-header>
 
-      <form [formGroup]="detailsForm" (ngSubmit)="onSubmit()">
-        <mat-card-content>
-          <div class="form-container">
-            <mat-card-title class="custom-font">Basic Details <span class="help-icon">?</span></mat-card-title>
-            <div *ngIf="selectedCompany">
-              Selected Company: {{ selectedCompany }}
-            </div>
-            <div *ngIf="selectedDate">
-              Selected Date: {{ selectedDate | date: 'mediumDate' }}
-            </div>
-            <div *ngIf="selectedStore">
-              Selected Store: {{ selectedStore }}
-            </div>
-            <div *ngIf="selectedRemarks">
-              Remarks: {{ selectedRemarks }}
-            </div>
+      <mat-card-content>
+        <div class="form-container">
+          <mat-card-title class="custom-font">Details <span class="help-icon">?</span></mat-card-title>
+          <div class="selected-item" *ngIf="selectedCompany">
+            <mat-icon class="icon">location_on</mat-icon>
+            <span>{{ selectedCompany }}</span>
           </div>
-        </mat-card-content>
-      </form>
+          <div class="selected-item" *ngIf="selectedStore">
+            <mat-icon class="icon">store</mat-icon>
+            <span>{{ selectedStore }}</span>
+          </div>
+          <div class="selected-item" *ngIf="selectedDate">
+            <mat-icon class="icon">event</mat-icon>
+            <span>{{ selectedDate | date : "MMM d, yyyy" }}</span>
+          </div>
+        </div>
+      </mat-card-content>
+      
 
       <div formArrayName="inventories">
         <mat-card
@@ -184,20 +209,34 @@
                   <button
                     mat-raised-button
                     color="warn"
-                    style="color: green; margin-right: 1000px"
+                    style="
+                      color: green;
+                      margin-right: 1000px;
+                      border: none;
+                      white-space: nowrap;
+                      box-shadow: none;
+                      background: none;
+                    "
                     type="button"
                     (click)="clearForm(i)"
                   >
                     <mat-icon>refresh</mat-icon>
-                    CLEAR ALL
+                    <span style="display: inline-block">CLEAR ALL</span>
                   </button>
+
                   <button
                     mat-raised-button
                     color="warn"
                     type="button"
                     (click)="deleteForm(i)"
+                    style="
+                      border: none;
+                      box-shadow: none;
+                      color: grey;
+                      background-color: white;
+                    "
                   >
-                    <mat-icon>delete</mat-icon>
+                    <mat-icon style="color: grey">delete</mat-icon>
                     DELETE
                   </button>
                 </div>

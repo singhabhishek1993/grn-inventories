@@ -1,29 +1,15 @@
 .form-container {
   display: grid;
-  grid-template-columns: 1fr;
   grid-gap: 1rem;
   padding: 1rem;
   border: 1px solid #ccc;
   border-radius: 4px;
-//   justify-items: end; 
-  align-items: start;
-}
-
-.form-field {
-  width: 100%; 
+  position: relative;
+  overflow: auto; /* Added */
 }
 
 .full-width {
-  width: 500px; 
-}
-
-.form-field {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.full-width.right-align {
-  width: 500px;
+  width: calc(100% - 32px);
 }
 
 .custom-font {
@@ -31,54 +17,44 @@
 }
 
 .help-icon {
-    background-color: #ccc;
-    color: white;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    margin-right: 8px;
-  }
-
-  .header-step {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-  }
-
-  .header-container {
-  display: flex;
-  justify-content: space-between;
+  background-color: #ccc;
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  margin-right: 8px;
+}
+
+.header-step {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .actions-right {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
 }
 
 .action-button {
   margin-left: 10px;
-}
-
-.actions-right {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+  box-shadow: none; 
 }
 
 .next-button {
   background-color: green;
   color: white;
-  margin-left: 8px; 
+  margin-left: 8px;
 }
 
 .form-count {
-  font-size: 0.8rem; 
+  font-size: 0.8rem;
   color: green;
 }
 
@@ -100,19 +76,6 @@
   min-width: 290px;
 }
 
-.full-width {
-  width: 100%;
-}
-
-.form-count {
-  margin-bottom: 16px;
-}
-
-.action-button {
-  background-color: lightgrey;
-  color: black;
-}
-
 .custom-select .mat-select-panel {
   max-width: 100% !important;
 }
@@ -120,5 +83,28 @@
 .example-form-field {
   margin-right: 20px;
 }
+
+.form-container .custom-font {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.form-container .selected-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}
+
+.form-container .icon {
+  margin-left: 8px; /* Adjusted to create space between text and icon */
+}
+
+
+.form-container .help-icon {
+  margin-right: 8px;
+}
+
 
 

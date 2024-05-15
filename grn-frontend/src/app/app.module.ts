@@ -16,6 +16,8 @@ import { DetailsComponent } from './details/details.component';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
 
+
+
 const routes: Routes = [
   { path: 'details', component: DetailsComponent },
   { path: '', redirectTo: '/details', pathMatch: 'full' }
