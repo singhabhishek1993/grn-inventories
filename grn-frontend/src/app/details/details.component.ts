@@ -44,9 +44,9 @@ export class DetailsComponent implements OnInit {
       itemCategory: ['', Validators.required],
       item: ['', Validators.required],
       strain: ['', Validators.required],
-      quantity: ['', [Validators.required, Validators.pattern(/^[0-9]*$/)]], // Pattern to allow only numbers
+      quantity: ['', [Validators.required, Validators.pattern(/^[0-9]*$/)]], 
       uom: ['', Validators.required],
-      totalCost: ['', [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)]], // Pattern to allow numbers with up to 2 decimal places
+      totalCost: ['', [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)]], 
       costPerUnit: [''],
       supplier: ['', Validators.required]
     });
