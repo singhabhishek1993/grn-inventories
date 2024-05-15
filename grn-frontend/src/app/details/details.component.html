@@ -1,0 +1,246 @@
+<mat-horizontal-stepper>
+  <mat-step label="Details" [completed]="detailsForm.valid" state="details">
+    <mat-card>
+      <mat-card-header class="header-step">
+        <mat-card-title class="custom-font">Create GRN</mat-card-title>
+      </mat-card-header>
+      <form [formGroup]="detailsForm" (ngSubmit)="onSubmit()">
+        <mat-card-content>
+          <div class="form-container" style="display: flex;">
+            <div style="width: 50%;">
+              <mat-card-title class="custom-font" style="margin-right: auto;">
+                Basic Details <span class="help-icon">?</span>
+              </mat-card-title>
+            </div>
+            
+            <div style="width: 50%; margin-left: auto;">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Select Company</mat-label>
+                <mat-select (selectionChange)="onCompanySelect($event)">
+                  <mat-option value="option">Option</mat-option>
+                </mat-select>
+                
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Choose a date</mat-label>
+                <input matInput [matDatepicker]="datepicker">
+                <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+                <mat-datepicker #datepicker></mat-datepicker>
+              </mat-form-field>
+              <div class="form-field">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Select Store</mat-label>
+                  <mat-select formControlName="exampleSelect" panelClass="custom-select">
+                    <mat-option value="one">First Store</mat-option>
+                    <mat-option value="two">Second Store</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+          
+              <div class="form-field" style="margin-top: 16px;">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Remarks</mat-label>
+                  <textarea matInput formControlName="remarks"></textarea>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+        
+        
+        
+        <mat-card-actions class="actions-right">
+          <button
+            mat-raised-button
+            class="action-button"
+            style="background-color: lightgrey; color: black"
+            type="button"
+            (click)="onCancel()"
+          >
+            CANCEL
+          </button>
+          <button mat-button matStepperNext class="next-button">NEXT</button>
+        </mat-card-actions>
+      </form>
+    </mat-card>
+  </mat-step>
+
+  <mat-step label="Inventories" state="inventories">
+    <form [formGroup]="detailsForm">
+      <mat-card>
+        <mat-card-header class="header-step">
+          <mat-card-title class="custom-font">Create GRN</mat-card-title>
+        </mat-card-header>
+      </mat-card>
+
+      <form [formGroup]="detailsForm" (ngSubmit)="onSubmit()">
+        <mat-card-content>
+          <div class="form-container">
+            <mat-card-title class="custom-font">Basic Details <span class="help-icon">?</span></mat-card-title>
+            <div *ngIf="selectedCompany">
+              Selected Company: {{ selectedCompany }}
+            </div>
+            <div *ngIf="selectedDate">
+              Selected Date: {{ selectedDate | date: 'mediumDate' }}
+            </div>
+            <div *ngIf="selectedStore">
+              Selected Store: {{ selectedStore }}
+            </div>
+            <div *ngIf="selectedRemarks">
+              Remarks: {{ selectedRemarks }}
+            </div>
+          </div>
+        </mat-card-content>
+      </form>
+
+      <div formArrayName="inventories">
+        <mat-card
+          *ngFor="let inventory of inventories.controls; let i = index"
+          [formGroupName]="i"
+        >
+          <mat-card-content>
+            <div class="form-container">
+              <h1 class="form-count">#{{ i + 1 }}</h1>
+              <div class="form-field-row">
+                <div class="form-field">
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Item Category</mat-label>
+                    <mat-select formControlName="itemCategory">
+                      <mat-option
+                        *ngFor="let category of itemCategories"
+                        [value]="category"
+                      >
+                        {{ category }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="form-field">
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Item</mat-label>
+                    <mat-select formControlName="item">
+                      <mat-option *ngFor="let item of items" [value]="item">
+                        {{ item }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="form-field">
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Strain</mat-label>
+                    <mat-select formControlName="strain">
+                      <mat-option
+                        *ngFor="let strain of strains"
+                        [value]="strain"
+                      >
+                        {{ strain }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="form-field">
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Quantity</mat-label>
+                    <input matInput formControlName="quantity" />
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="form-field-row">
+                <div class="form-field">
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>UoM</mat-label>
+                    <input matInput formControlName="uom" />
+                  </mat-form-field>
+                </div>
+                <div class="form-field">
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Total Cost</mat-label>
+                    <input matInput formControlName="totalCost" />
+                  </mat-form-field>
+                </div>
+                <div class="form-field">
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Cost Per Unit</mat-label>
+                    <input matInput formControlName="costPerUnit" />
+                  </mat-form-field>
+                </div>
+                <div class="form-field">
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Supplier</mat-label>
+                    <mat-select formControlName="supplier">
+                      <mat-option
+                        *ngFor="let supplier of suppliers"
+                        [value]="supplier"
+                      >
+                        {{ supplier }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div
+                  class="button-row"
+                  style="display: flex; align-items: center"
+                >
+                  <button
+                    mat-raised-button
+                    color="warn"
+                    style="color: green; margin-right: 1000px"
+                    type="button"
+                    (click)="clearForm(i)"
+                  >
+                    <mat-icon>refresh</mat-icon>
+                    CLEAR ALL
+                  </button>
+                  <button
+                    mat-raised-button
+                    color="warn"
+                    type="button"
+                    (click)="deleteForm(i)"
+                  >
+                    <mat-icon>delete</mat-icon>
+                    DELETE
+                  </button>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <mat-card-actions class="actions-right">
+        <button
+          mat-raised-button
+          class="action-button"
+          style="background-color: white; color: green"
+          type="button"
+          (click)="addNewForm()"
+        >
+          + ADD NEW
+        </button>
+      </mat-card-actions>
+
+      <mat-card-actions class="actions-right">
+        <button mat-button matStepperPrevious class="action-button">
+          BACK
+        </button>
+        <button
+          mat-raised-button
+          class="action-button"
+          style="background-color: orange; color: white"
+          type="button"
+          (click)="onSubmit(true)"
+        >
+          SAVE AS DRAFT
+        </button>
+        <button
+          mat-raised-button
+          class="action-button"
+          style="background-color: green; color: white"
+          type="submit"
+        >
+          SUBMIT
+        </button>
+      </mat-card-actions>
+    </form>
+  </mat-step>
+</mat-horizontal-stepper>
